@@ -1,0 +1,47 @@
+<h3>{{ user.username }}'s Profile</h3>
+
+<h2>Assigned Tickets</h2>
+{% for ticket in assigned_tickets %}
+id#: {{ticket.id}} | 
+Title: <a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a> | 
+Reported by: <a href="{% url 'user_profile' ticket.submitted_by.username %}">{{ ticket.submitted_by }}</a> | 
+Assigned To:
+{% if ticket.assigned_user %}
+<a href="{% url 'user_profile' ticket.assigned_user.username %}">{{ ticket.assigned_user }}</a>
+{% endif %}
+<br>
+{% endfor %}
+
+
+
+<h2>Submitted Tickets</h2>
+{% for ticket in submitted_tickets %}
+id#: {{ticket.id}} | 
+Title: <a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a> | 
+Reported by: <a href="{% url 'user_profile' ticket.submitted_by.username %}">{{ ticket.submitted_by }}</a>
+{% if ticket.assigned_user %}
+ | Assigned To:
+<a href="{% url 'user_profile' ticket.assigned_user.username %}">{{ ticket.assigned_user }}</a>
+{% endif %}
+{% if ticket.completed_by %}
+ | Completed by:
+<a href="{% url 'user_profile' ticket.completed_by.username %}">{{ ticket.completed_by }}</a>
+{% endif %}
+<br>
+{% endfor %}
+
+
+
+<h2>Completed Tickets</h2>
+{% for ticket in completed_tickets %}
+id#: {{ticket.id}} | 
+Title: <a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a> | 
+Reported by: <a href="{% url 'user_profile' ticket.submitted_by.username %}">{{ ticket.submitted_by }}</a> | 
+Completed by:
+{% if ticket.completed_by %}
+<a href="{% url 'user_profile' ticket.completed_by.username %}">{{ ticket.completed_by }}</a>
+{% endif %}
+<br>
+{% endfor %}
+<br>
+<a href="{% url 'homepage' %}">Home Page</a>

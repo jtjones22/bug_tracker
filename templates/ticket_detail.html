@@ -1,0 +1,48 @@
+<h3>Ticket Detail Page</h3>
+{% if request.user.id != item.submitted_by.id and item.status != 'Done' %}
+{% if request.user.id == item.assigned_user.id and item.assigned_user %}
+<h4>
+    Actions: 
+    <a href="{% url 'edit_ticket' item.id %}">Edit</a> | 
+        {% if item.status == 'New' %}
+        <a href="{% url 'assign_ticket' item.id %}">Assign ticket to me</a> | 
+        {% elif item.status == 'In Progress' %}
+        <a href="{% url 'finish_ticket' item.id %}">Complete</a> | 
+        <a href="{% url 'return_ticket' item.id %}">Return Ticket</a> | 
+        {% endif %}
+    <a href="{% url 'invalid_ticket' item.id %}">Mark ticket as Invalid</a>
+</h4>
+{% elif not item.assigned_user %}
+<h4>
+    Actions: 
+    <a href="{% url 'edit_ticket' item.id %}">Edit</a> | 
+        {% if item.status == 'New' %}
+        <a href="{% url 'assign_ticket' item.id %}">Assign ticket to me</a> | 
+        {% elif item.status == 'In Progress' %}
+        <a href="{% url 'finish_ticket' item.id %}">Complete</a> | 
+        <a href="{% url 'return_ticket' item.id %}">Return Ticket</a> | 
+        {% endif %}
+    <a href="{% url 'invalid_ticket' item.id %}">Mark ticket as Invalid</a>
+</h4>
+{% endif %}
+{% endif %}
+<h4>Info</h4>
+<h5>Title: {{ item.title }}</h5>
+<h5>ID: {{ item.id }}</h5>
+<h5>Status: {{ item.status }}</h5>
+<h5>Submitted on: {{ item.time }}</h5>
+<h5>Reported by: 
+    <a href="{% url 'user_profile' item.submitted_by.username %}">
+        {{ item.submitted_by }}
+    </a>
+</h5>
+{% if item.assigned_user %}
+<h4>Assigned to: <a href="{% url 'user_profile' item.assigned_user.username %}">{{ item.assigned_user }}</h4></a>
+{% elif item.completed_by %}
+<h4>Completed by: <a href="{% url 'user_profile' item.completed_by.username %}">{{ item.completed_by }}</h4></a>
+{% endif %}
+<hr>
+<h4>Description</h4>
+<h5>{{ item.description }}</h5>
+<br>
+<a href="{% url 'homepage' %}">Home Page</a>
